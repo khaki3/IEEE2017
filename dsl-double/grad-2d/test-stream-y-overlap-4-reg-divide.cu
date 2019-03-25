@@ -37,8 +37,8 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
   __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*(FORMA_BLOCKDIM_X);
   double * __tilevar_5__ = (double*)(__FORMA_SHARED_MEM__+__FORMA_SHARED_MEM_OFFSET__);
   __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*(FORMA_BLOCKDIM_X);
-  double t2=0.0, t3=0.0, t4=0.0, t5=0.0;
-  double b2=0.0, b3=0.0, b4=0.0, b5=0.0;
+  double t2=0.0f, t3=0.0f, t4=0.0f, t5=0.0f;
+  double b2=0.0f, b3=0.0f, b4=0.0f, b5=0.0f;
   int __iter_0__ = (int)(blockIdx.x)*(int)(FORMA_BLOCKDIM_X-8);
   int __iter_y__ = FORMA_MAX((int)(blockIdx.y)*(int)(FORMA_BLOCKDIM_Y)-4, 0);
   // Initialize the values
@@ -59,7 +59,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
     if(__iter_3__ >= FORMA_MAX((__iter_0__+1),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-2),(M-2)) ){
         double __temp_1__ = (__tilevar_2__[__iter_3__-__iter_0__] - b2);
         double __temp_2__ = (__temp_1__ * __temp_1__);
-        double __temp_3__ = (0.000100 + __temp_2__);
+        double __temp_3__ = (0.000100f + __temp_2__);
         double __temp_5__ = (__tilevar_2__[__iter_3__-__iter_0__] - t2);
         double __temp_6__ = (__temp_5__ * __temp_5__);
         double __temp_7__ = (__temp_3__ + __temp_6__);
@@ -70,7 +70,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
         double __temp_14__ = (__temp_13__ * __temp_13__);
         double __temp_15__ = (__temp_11__ + __temp_14__);
         double __temp_16__ = sqrt(__temp_15__);
-        double __temp_17__ = (1.000000 / __temp_16__);
+        double __temp_17__ = (1.000000f / __temp_16__);
         double __temp_18__ = (__tilevar_2__[__iter_3__-__iter_0__] + __temp_17__);
         b3 = __tilevar_3__[__iter_3__-__iter_0__];
         __tilevar_3__[__iter_3__-__iter_0__] = t3;
@@ -80,7 +80,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
     if(__iter_3__ >= FORMA_MAX((__iter_0__+2),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-3),(M-2)) ){
         double __temp_1__ = (__tilevar_3__[__iter_3__-__iter_0__] - b3);
         double __temp_2__ = (__temp_1__ * __temp_1__);
-        double __temp_3__ = (0.000100 + __temp_2__);
+        double __temp_3__ = (0.000100f + __temp_2__);
         double __temp_5__ = (__tilevar_3__[__iter_3__-__iter_0__] - t3);
         double __temp_6__ = (__temp_5__ * __temp_5__);
         double __temp_7__ = (__temp_3__ + __temp_6__);
@@ -91,7 +91,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
         double __temp_14__ = (__temp_13__ * __temp_13__);
         double __temp_15__ = (__temp_11__ + __temp_14__);
         double __temp_16__ = sqrt(__temp_15__);
-        double __temp_17__ = (1.000000 / __temp_16__);
+        double __temp_17__ = (1.000000f / __temp_16__);
         double __temp_18__ = (__tilevar_3__[__iter_3__-__iter_0__] + __temp_17__);
         b4 = __tilevar_4__[__iter_3__-__iter_0__];
         __tilevar_4__[__iter_3__-__iter_0__] = t4;
@@ -101,7 +101,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
     if(__iter_3__ >= FORMA_MAX((__iter_0__+3),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-4),(M-2)) ){
         double __temp_1__ = (__tilevar_4__[__iter_3__-__iter_0__] - b4);
         double __temp_2__ = (__temp_1__ * __temp_1__);
-        double __temp_3__ = (0.000100 + __temp_2__);
+        double __temp_3__ = (0.000100f + __temp_2__);
         double __temp_5__ = (__tilevar_4__[__iter_3__-__iter_0__] - t4);
         double __temp_6__ = (__temp_5__ * __temp_5__);
         double __temp_7__ = (__temp_3__ + __temp_6__);
@@ -112,7 +112,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
         double __temp_14__ = (__temp_13__ * __temp_13__);
         double __temp_15__ = (__temp_11__ + __temp_14__);
         double __temp_16__ = sqrt(__temp_15__);
-        double __temp_17__ = (1.000000 / __temp_16__);
+        double __temp_17__ = (1.000000f / __temp_16__);
         double __temp_18__ = (__tilevar_4__[__iter_3__-__iter_0__] + __temp_17__);
         b5 = __tilevar_5__[__iter_3__-__iter_0__];
         __tilevar_5__[__iter_3__-__iter_0__] = t5;
@@ -130,7 +130,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
     if(__iter_3__ >= FORMA_MAX((__iter_0__+1),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-2),(M-2)) ){
         double __temp_1__ = (__tilevar_2__[__iter_3__-__iter_0__] - b2);
         double __temp_2__ = (__temp_1__ * __temp_1__);
-        double __temp_3__ = (0.000100 + __temp_2__);
+        double __temp_3__ = (0.000100f + __temp_2__);
         double __temp_5__ = (__tilevar_2__[__iter_3__-__iter_0__] - t2);
         double __temp_6__ = (__temp_5__ * __temp_5__);
         double __temp_7__ = (__temp_3__ + __temp_6__);
@@ -141,7 +141,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
         double __temp_14__ = (__temp_13__ * __temp_13__);
         double __temp_15__ = (__temp_11__ + __temp_14__);
         double __temp_16__ = sqrt(__temp_15__);
-        double __temp_17__ = (1.000000 / __temp_16__);
+        double __temp_17__ = (1.000000f / __temp_16__);
         double __temp_18__ = (__tilevar_2__[__iter_3__-__iter_0__] + __temp_17__);
         b3 = __tilevar_3__[__iter_3__-__iter_0__];
         __tilevar_3__[__iter_3__-__iter_0__] = t3;
@@ -151,7 +151,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
     if(__iter_3__ >= FORMA_MAX((__iter_0__+2),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-3),(M-2)) ){
         double __temp_1__ = (__tilevar_3__[__iter_3__-__iter_0__] - b3);
         double __temp_2__ = (__temp_1__ * __temp_1__);
-        double __temp_3__ = (0.000100 + __temp_2__);
+        double __temp_3__ = (0.000100f + __temp_2__);
         double __temp_5__ = (__tilevar_3__[__iter_3__-__iter_0__] - t3);
         double __temp_6__ = (__temp_5__ * __temp_5__);
         double __temp_7__ = (__temp_3__ + __temp_6__);
@@ -162,7 +162,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
         double __temp_14__ = (__temp_13__ * __temp_13__);
         double __temp_15__ = (__temp_11__ + __temp_14__);
         double __temp_16__ = sqrt(__temp_15__);
-        double __temp_17__ = (1.000000 / __temp_16__);
+        double __temp_17__ = (1.000000f / __temp_16__);
         double __temp_18__ = (__tilevar_3__[__iter_3__-__iter_0__] + __temp_17__);
         b4 = __tilevar_4__[__iter_3__-__iter_0__];
         __tilevar_4__[__iter_3__-__iter_0__] = t4;
@@ -172,7 +172,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
     if(__iter_3__ >= FORMA_MAX((__iter_0__+3),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-4),(M-2)) ){
         double __temp_1__ = (__tilevar_4__[__iter_3__-__iter_0__] - b4);
         double __temp_2__ = (__temp_1__ * __temp_1__);
-        double __temp_3__ = (0.000100 + __temp_2__);
+        double __temp_3__ = (0.000100f + __temp_2__);
         double __temp_5__ = (__tilevar_4__[__iter_3__-__iter_0__] - t4);
         double __temp_6__ = (__temp_5__ * __temp_5__);
         double __temp_7__ = (__temp_3__ + __temp_6__);
@@ -183,7 +183,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
         double __temp_14__ = (__temp_13__ * __temp_13__);
         double __temp_15__ = (__temp_11__ + __temp_14__);
         double __temp_16__ = sqrt(__temp_15__);
-        double __temp_17__ = (1.000000 / __temp_16__);
+        double __temp_17__ = (1.000000f / __temp_16__);
         double __temp_18__ = (__tilevar_4__[__iter_3__-__iter_0__] + __temp_17__);
         b5 = __tilevar_5__[__iter_3__-__iter_0__];
         __tilevar_5__[__iter_3__-__iter_0__] = t5;
@@ -193,7 +193,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
     if(__iter_3__ >= FORMA_MAX((__iter_0__+4),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-5),(M-2)) ){
         double __temp_1__ = (__tilevar_5__[__iter_3__-__iter_0__] - b5);
         double __temp_2__ = (__temp_1__ * __temp_1__);
-        double __temp_3__ = (0.000100 + __temp_2__);
+        double __temp_3__ = (0.000100f + __temp_2__);
         double __temp_5__ = (__tilevar_5__[__iter_3__-__iter_0__] - t5);
         double __temp_6__ = (__temp_5__ * __temp_5__);
         double __temp_7__ = (__temp_3__ + __temp_6__);
@@ -204,7 +204,7 @@ __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N,
         double __temp_14__ = (__temp_13__ * __temp_13__);
         double __temp_15__ = (__temp_11__ + __temp_14__);
         double __temp_16__ = sqrt(__temp_15__);
-        double __temp_17__ = (1.000000 / __temp_16__);
+        double __temp_17__ = (1.000000f / __temp_16__);
         double __temp_18__ = (__tilevar_5__[__iter_3__-__iter_0__] + __temp_17__);
         __var_1__[__iter_3__+(M)*FORMA_MAX(__iter_1__-3,0)] = __temp_18__;
     }
@@ -242,12 +242,7 @@ extern "C" void gradient (double * h_input, int N, int M, double * __var_0__){
 /* Kernel Launch Begin */
   int __FORMA_MAX_SHARED_MEM__;
   cudaDeviceGetAttribute(&__FORMA_MAX_SHARED_MEM__,cudaDevAttrMaxSharedMemoryPerBlock,0);
-#ifdef _TIMER_
-  cudaEvent_t _forma_timer_start_,_forma_timer_stop_;
-  cudaEventCreate(&_forma_timer_start_);
-  cudaEventCreate(&_forma_timer_stop_);
-  cudaEventRecord(_forma_timer_start_,0);
-#endif
+
   int __size_0___kernel___forma_kernel__0__ = M;
   int __size_1___kernel___forma_kernel__0__ = N;
   int __block_0___kernel___forma_kernel__0__ = 128;
@@ -256,18 +251,25 @@ extern "C" void gradient (double * h_input, int N, int M, double * __var_0__){
   int __SMemSize___kernel___forma_kernel__0__ = 0;
   __SMemSize___kernel___forma_kernel__0__ = __blockSizeToSMemSize___kernel___forma_kernel__0__(__blockConfig___kernel___forma_kernel__0__);
   int __grid_0___kernel___forma_kernel__0__ = FORMA_CEIL(__size_0___kernel___forma_kernel__0__,__blockConfig___kernel___forma_kernel__0__.x-8);
-  int __grid_1___kernel___forma_kernel__0__ = FORMA_CEIL(__size_1___kernel___forma_kernel__0__, __size_1___kernel___forma_kernel__0__/16);
+  int __grid_1___kernel___forma_kernel__0__ = FORMA_CEIL(__size_1___kernel___forma_kernel__0__, 128);
   dim3 __gridConfig___kernel___forma_kernel__0__(__grid_0___kernel___forma_kernel__0__,__grid_1___kernel___forma_kernel__0__);
-  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (input, N, M, __blockConfig___kernel___forma_kernel__0__.x, __size_1___kernel___forma_kernel__0__/16, __var_1__);
-  Check_CUDA_Error("Kernel Launch Error!! : __kernel___forma_kernel__0__\n");
 
-  cudaPointerAttributes ptrAttrib___var_0__;
-  cudaMemcpyKind memcpy_kind___var_0__ = cudaMemcpyDeviceToHost;
-  if (cudaPointerGetAttributes(&ptrAttrib___var_0__, __var_0__) == cudaSuccess)
-    if (ptrAttrib___var_0__.memoryType == cudaMemoryTypeDevice)
-      memcpy_kind___var_0__ = cudaMemcpyDeviceToDevice;
-  cudaGetLastError();
-  cudaMemcpy(__var_0__,__var_1__, sizeof(double)*((N)*(M)), memcpy_kind___var_0__);
+  for (int i = 0; i < 125; i++) {
+  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (input, N, M, __blockConfig___kernel___forma_kernel__0__.x, 128, __var_1__);
+  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (__var_1__, N, M, __blockConfig___kernel___forma_kernel__0__.x, 128, input);
+  }
+
+  for (int n = 0; n < 5; n++) {
+#ifdef _TIMER_
+  cudaEvent_t _forma_timer_start_,_forma_timer_stop_;
+  cudaEventCreate(&_forma_timer_start_);
+  cudaEventCreate(&_forma_timer_stop_);
+  cudaEventRecord(_forma_timer_start_,0);
+#endif
+  for (int i = 0; i < 125; i++) {
+  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (input, N, M, __blockConfig___kernel___forma_kernel__0__.x, 128, __var_1__);
+  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (__var_1__, N, M, __blockConfig___kernel___forma_kernel__0__.x, 128, input);
+  }
 #ifdef _TIMER_
   cudaEventRecord(_forma_timer_stop_,0);
   cudaEventSynchronize(_forma_timer_stop_);
@@ -277,6 +279,18 @@ extern "C" void gradient (double * h_input, int N, int M, double * __var_0__){
   cudaEventDestroy(_forma_timer_start_);
   cudaEventDestroy(_forma_timer_stop_);
 #endif
+  }
+
+
+  Check_CUDA_Error("Kernel Launch Error!! : __kernel___forma_kernel__0__\n");
+
+  cudaPointerAttributes ptrAttrib___var_0__;
+  cudaMemcpyKind memcpy_kind___var_0__ = cudaMemcpyDeviceToHost;
+  if (cudaPointerGetAttributes(&ptrAttrib___var_0__, __var_0__) == cudaSuccess)
+    if (ptrAttrib___var_0__.memoryType == cudaMemoryTypeDevice)
+      memcpy_kind___var_0__ = cudaMemcpyDeviceToDevice;
+  cudaGetLastError();
+  cudaMemcpy(__var_0__,__var_1__, sizeof(double)*((N)*(M)), memcpy_kind___var_0__);
 /*Kernel Launch End */
 /* Host Free Begin */
   cudaFree(input);

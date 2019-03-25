@@ -43,9 +43,9 @@ void Check_CUDA_Error(const char* message);
 extern __shared__ char __FORMA_SHARED_MEM__[];
 /* Device code Begin */
 /* X, Y, Z */
-__global__ void __kernel___forma_kernel__0__(float * __restrict__ input, int L, int M, int N, int FORMA_BLOCKDIM_X, int FORMA_BLOCKDIM_Y, int FORMA_BLOCKDIM_Z, float * __restrict__ __var_1__){
-  __shared__ float tilevar[4][32*32];
-  float t[8], b[8];
+__global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int L, int M, int N, int FORMA_BLOCKDIM_X, int FORMA_BLOCKDIM_Y, int FORMA_BLOCKDIM_Z, double * __restrict__ __var_1__){
+  __shared__ double tilevar[4][32*32];
+  double t[8], b[8];
   int __iter_0__ = (int)(blockIdx.x)*((int)(FORMA_BLOCKDIM_X)-16);
   int __iter_1__ = (int)(blockIdx.y)*((int)(FORMA_BLOCKDIM_Y)-16);
 
@@ -69,27 +69,27 @@ __global__ void __kernel___forma_kernel__0__(float * __restrict__ input, int L, 
     }
     __syncthreads ();
     if(__iter_4__ >= FORMA_MAX((__iter_1__+2),2) & __iter_4__ <= FORMA_MIN(((__iter_1__+FORMA_BLOCKDIM_Y)-3),(M-3)) & __iter_5__ >= FORMA_MAX((__iter_0__+2),2) & __iter_5__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-3),(N-3))){
-        float __temp_3__ = (tilevar[0][__iter_5__+2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_7__ = (tilevar[0][__iter_5__+1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_8__ = (0.083000f * __temp_3__ + 0.083000f * __temp_7__);
-        float __temp_12__ = (tilevar[0][__iter_5__-1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_13__ = (__temp_8__ + 0.083000f * __temp_12__);
-        float __temp_17__ = (tilevar[0][__iter_5__-2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_18__ = (__temp_13__ + 0.083000f * __temp_17__);
-        float __temp_22__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+2-__iter_1__)]);
-        float __temp_23__ = (__temp_18__ + 0.083000f * __temp_22__);
-        float __temp_27__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+1-__iter_1__)]);
-        float __temp_28__ = (__temp_23__ + 0.083000f * __temp_27__);
-        float __temp_32__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-1-__iter_1__)]);
-        float __temp_33__ = (__temp_28__ + 0.083000f * __temp_32__);
-        float __temp_37__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-2-__iter_1__)]);
-        float __temp_38__ = (__temp_33__ + 0.083000f * __temp_37__);
-        float __temp_43__ = (__temp_38__ + 0.083000f * t[4]);
-        float __temp_48__ = (__temp_43__ + 0.083000f * t[0]);
-        float __temp_53__ = (__temp_48__ + 0.083000f * b[0]);
-        float __temp_58__ = (__temp_53__ + 0.083000f * b[4]);
-        float __temp_62__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_63__ = (__temp_58__ - 0.996000f * __temp_62__);
+        double __temp_3__ = (tilevar[0][__iter_5__+2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_7__ = (tilevar[0][__iter_5__+1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_8__ = (0.083000f * __temp_3__ + 0.083000f * __temp_7__);
+        double __temp_12__ = (tilevar[0][__iter_5__-1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_13__ = (__temp_8__ + 0.083000f * __temp_12__);
+        double __temp_17__ = (tilevar[0][__iter_5__-2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_18__ = (__temp_13__ + 0.083000f * __temp_17__);
+        double __temp_22__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+2-__iter_1__)]);
+        double __temp_23__ = (__temp_18__ + 0.083000f * __temp_22__);
+        double __temp_27__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+1-__iter_1__)]);
+        double __temp_28__ = (__temp_23__ + 0.083000f * __temp_27__);
+        double __temp_32__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-1-__iter_1__)]);
+        double __temp_33__ = (__temp_28__ + 0.083000f * __temp_32__);
+        double __temp_37__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-2-__iter_1__)]);
+        double __temp_38__ = (__temp_33__ + 0.083000f * __temp_37__);
+        double __temp_43__ = (__temp_38__ + 0.083000f * t[4]);
+        double __temp_48__ = (__temp_43__ + 0.083000f * t[0]);
+        double __temp_53__ = (__temp_48__ + 0.083000f * b[0]);
+        double __temp_58__ = (__temp_53__ + 0.083000f * b[4]);
+        double __temp_62__ = (tilevar[0][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_63__ = (__temp_58__ - 0.996000f * __temp_62__);
 	b[5] = b[1];
         b[1] = tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)];
         tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)] = t[1];
@@ -98,27 +98,27 @@ __global__ void __kernel___forma_kernel__0__(float * __restrict__ input, int L, 
     }
     __syncthreads ();
     if(__iter_4__ >= FORMA_MAX((__iter_1__+4),2) & __iter_4__ <= FORMA_MIN(((__iter_1__+FORMA_BLOCKDIM_Y)-5),(M-3)) & __iter_5__ >= FORMA_MAX((__iter_0__+4),2) &  __iter_5__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-5),(N-3)) ){
-        float __temp_3__ = (tilevar[1][__iter_5__+2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_7__ = (tilevar[1][__iter_5__+1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_8__ = (0.083000f * __temp_3__ + 0.083000f * __temp_7__);
-        float __temp_12__ = (tilevar[1][__iter_5__-1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_13__ = (__temp_8__ + 0.083000f * __temp_12__);
-        float __temp_17__ = (tilevar[1][__iter_5__-2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_18__ = (__temp_13__ + 0.083000f * __temp_17__);
-        float __temp_22__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+2-__iter_1__)]);
-        float __temp_23__ = (__temp_18__ + 0.083000f * __temp_22__);
-        float __temp_27__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+1-__iter_1__)]);
-        float __temp_28__ = (__temp_23__ + 0.083000f * __temp_27__);
-        float __temp_32__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-1-__iter_1__)]);
-        float __temp_33__ = (__temp_28__ + 0.083000f * __temp_32__);
-        float __temp_37__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-2-__iter_1__)]);
-        float __temp_38__ = (__temp_33__ + 0.083000f * __temp_37__);
-        float __temp_43__ = (__temp_38__ + 0.083000f * t[5]);
-        float __temp_48__ = (__temp_43__ + 0.083000f * t[1]);
-        float __temp_53__ = (__temp_48__ + 0.083000f * b[1]);
-        float __temp_58__ = (__temp_53__ + 0.083000f * b[5]);
-        float __temp_62__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_63__ = (__temp_58__ - 0.996000f * __temp_62__);
+        double __temp_3__ = (tilevar[1][__iter_5__+2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_7__ = (tilevar[1][__iter_5__+1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_8__ = (0.083000f * __temp_3__ + 0.083000f * __temp_7__);
+        double __temp_12__ = (tilevar[1][__iter_5__-1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_13__ = (__temp_8__ + 0.083000f * __temp_12__);
+        double __temp_17__ = (tilevar[1][__iter_5__-2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_18__ = (__temp_13__ + 0.083000f * __temp_17__);
+        double __temp_22__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+2-__iter_1__)]);
+        double __temp_23__ = (__temp_18__ + 0.083000f * __temp_22__);
+        double __temp_27__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+1-__iter_1__)]);
+        double __temp_28__ = (__temp_23__ + 0.083000f * __temp_27__);
+        double __temp_32__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-1-__iter_1__)]);
+        double __temp_33__ = (__temp_28__ + 0.083000f * __temp_32__);
+        double __temp_37__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-2-__iter_1__)]);
+        double __temp_38__ = (__temp_33__ + 0.083000f * __temp_37__);
+        double __temp_43__ = (__temp_38__ + 0.083000f * t[5]);
+        double __temp_48__ = (__temp_43__ + 0.083000f * t[1]);
+        double __temp_53__ = (__temp_48__ + 0.083000f * b[1]);
+        double __temp_58__ = (__temp_53__ + 0.083000f * b[5]);
+        double __temp_62__ = (tilevar[1][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_63__ = (__temp_58__ - 0.996000f * __temp_62__);
 	b[6] = b[2];
         b[2] = tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)];
         tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)] = t[2];
@@ -127,27 +127,27 @@ __global__ void __kernel___forma_kernel__0__(float * __restrict__ input, int L, 
     }
     __syncthreads ();
     if(__iter_4__ >= FORMA_MAX((__iter_1__+6),2) & __iter_4__ <= FORMA_MIN(((__iter_1__+FORMA_BLOCKDIM_Y)-7),(M-3)) & __iter_5__ >= FORMA_MAX((__iter_0__+6),2) & __iter_5__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-7),(N-3))){
-        float __temp_3__ = (tilevar[2][__iter_5__+2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_7__ = (tilevar[2][__iter_5__+1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_8__ = (0.083000f * __temp_3__ + 0.083000f * __temp_7__);
-        float __temp_12__ = (tilevar[2][__iter_5__-1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_13__ = (__temp_8__ + 0.083000f * __temp_12__);
-        float __temp_17__ = (tilevar[2][__iter_5__-2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_18__ = (__temp_13__ + 0.083000f * __temp_17__);
-        float __temp_22__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+2-__iter_1__)]);
-        float __temp_23__ = (__temp_18__ + 0.083000f * __temp_22__);
-        float __temp_27__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+1-__iter_1__)]);
-        float __temp_28__ = (__temp_23__ + 0.083000f * __temp_27__);
-        float __temp_32__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-1-__iter_1__)]);
-        float __temp_33__ = (__temp_28__ + 0.083000f * __temp_32__);
-        float __temp_37__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-2-__iter_1__)]);
-        float __temp_38__ = (__temp_33__ + 0.083000f * __temp_37__);
-        float __temp_43__ = (__temp_38__ + 0.083000f * t[6]);
-        float __temp_48__ = (__temp_43__ + 0.083000f * t[2]);
-        float __temp_53__ = (__temp_48__ + 0.083000f * b[2]);
-        float __temp_58__ = (__temp_53__ + 0.083000f * b[6]);
-        float __temp_62__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_63__ = (__temp_58__ - 0.996000f * __temp_62__);
+        double __temp_3__ = (tilevar[2][__iter_5__+2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_7__ = (tilevar[2][__iter_5__+1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_8__ = (0.083000f * __temp_3__ + 0.083000f * __temp_7__);
+        double __temp_12__ = (tilevar[2][__iter_5__-1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_13__ = (__temp_8__ + 0.083000f * __temp_12__);
+        double __temp_17__ = (tilevar[2][__iter_5__-2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_18__ = (__temp_13__ + 0.083000f * __temp_17__);
+        double __temp_22__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+2-__iter_1__)]);
+        double __temp_23__ = (__temp_18__ + 0.083000f * __temp_22__);
+        double __temp_27__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+1-__iter_1__)]);
+        double __temp_28__ = (__temp_23__ + 0.083000f * __temp_27__);
+        double __temp_32__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-1-__iter_1__)]);
+        double __temp_33__ = (__temp_28__ + 0.083000f * __temp_32__);
+        double __temp_37__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-2-__iter_1__)]);
+        double __temp_38__ = (__temp_33__ + 0.083000f * __temp_37__);
+        double __temp_43__ = (__temp_38__ + 0.083000f * t[6]);
+        double __temp_48__ = (__temp_43__ + 0.083000f * t[2]);
+        double __temp_53__ = (__temp_48__ + 0.083000f * b[2]);
+        double __temp_58__ = (__temp_53__ + 0.083000f * b[6]);
+        double __temp_62__ = (tilevar[2][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_63__ = (__temp_58__ - 0.996000f * __temp_62__);
 	b[7] = b[3];
         b[3] = tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)];
         tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)] = t[3];
@@ -156,27 +156,27 @@ __global__ void __kernel___forma_kernel__0__(float * __restrict__ input, int L, 
     }
     __syncthreads (); 
     if(__iter_4__ >= FORMA_MAX((__iter_1__+8),2) & __iter_4__ <= FORMA_MIN(((__iter_1__+FORMA_BLOCKDIM_Y)-9),(M-3)) & __iter_5__ >= FORMA_MAX((__iter_0__+8),2) & __iter_5__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-9),(N-3))){
-        float __temp_3__ = (tilevar[3][__iter_5__+2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_7__ = (tilevar[3][__iter_5__+1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_8__ = (0.083000f * __temp_3__ + 0.083000f * __temp_7__);
-        float __temp_12__ = (tilevar[3][__iter_5__-1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_13__ = (__temp_8__ + 0.083000f * __temp_12__);
-        float __temp_17__ = (tilevar[3][__iter_5__-2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_18__ = (__temp_13__ + 0.083000f * __temp_17__);
-        float __temp_22__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+2-__iter_1__)]);
-        float __temp_23__ = (__temp_18__ + 0.083000f * __temp_22__);
-        float __temp_27__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+1-__iter_1__)]);
-        float __temp_28__ = (__temp_23__ + 0.083000f * __temp_27__);
-        float __temp_32__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-1-__iter_1__)]);
-        float __temp_33__ = (__temp_28__ + 0.083000f * __temp_32__);
-        float __temp_37__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-2-__iter_1__)]);
-        float __temp_38__ = (__temp_33__ + 0.083000f * __temp_37__);
-        float __temp_43__ = (__temp_38__ + 0.083000f * t[7]);
-        float __temp_48__ = (__temp_43__ + 0.083000f * t[3]);
-        float __temp_53__ = (__temp_48__ + 0.083000f * b[3]);
-        float __temp_58__ = (__temp_53__ + 0.083000f * b[7]);
-        float __temp_62__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
-        float __temp_63__ = (__temp_58__ - 0.996000f * __temp_62__);
+        double __temp_3__ = (tilevar[3][__iter_5__+2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_7__ = (tilevar[3][__iter_5__+1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_8__ = (0.083000f * __temp_3__ + 0.083000f * __temp_7__);
+        double __temp_12__ = (tilevar[3][__iter_5__-1-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_13__ = (__temp_8__ + 0.083000f * __temp_12__);
+        double __temp_17__ = (tilevar[3][__iter_5__-2-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_18__ = (__temp_13__ + 0.083000f * __temp_17__);
+        double __temp_22__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+2-__iter_1__)]);
+        double __temp_23__ = (__temp_18__ + 0.083000f * __temp_22__);
+        double __temp_27__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__+1-__iter_1__)]);
+        double __temp_28__ = (__temp_23__ + 0.083000f * __temp_27__);
+        double __temp_32__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-1-__iter_1__)]);
+        double __temp_33__ = (__temp_28__ + 0.083000f * __temp_32__);
+        double __temp_37__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-2-__iter_1__)]);
+        double __temp_38__ = (__temp_33__ + 0.083000f * __temp_37__);
+        double __temp_43__ = (__temp_38__ + 0.083000f * t[7]);
+        double __temp_48__ = (__temp_43__ + 0.083000f * t[3]);
+        double __temp_53__ = (__temp_48__ + 0.083000f * b[3]);
+        double __temp_58__ = (__temp_53__ + 0.083000f * b[7]);
+        double __temp_62__ = (tilevar[3][__iter_5__-__iter_0__+FORMA_BLOCKDIM_X*(__iter_4__-__iter_1__)]);
+        double __temp_63__ = (__temp_58__ - 0.996000f * __temp_62__);
         __var_1__[__iter_5__+N*(__iter_4__+M*FORMA_MAX(__iter_2__-6,0))] = __temp_63__;
     }
   }
@@ -184,11 +184,11 @@ __global__ void __kernel___forma_kernel__0__(float * __restrict__ input, int L, 
 
 /*Device code End */
 /* Host Code Begin */
-extern "C" void j3d13pt(float * h_input, int L, int M, int N, float * __var_0__){
+extern "C" void j3d13pt(double * h_input, int L, int M, int N, double * __var_0__){
 
 /* Host allocation Begin */
-  float * input;
-  cudaMalloc(&input,sizeof(float)*(L*M*N));
+  double * input;
+  cudaMalloc(&input,sizeof(double)*(L*M*N));
   Check_CUDA_Error("Allocation Error!! : input\n");
   cudaPointerAttributes ptrAttrib_h_input;
   cudaMemcpyKind memcpy_kind_h_input = cudaMemcpyHostToDevice;
@@ -197,10 +197,10 @@ extern "C" void j3d13pt(float * h_input, int L, int M, int N, float * __var_0__)
       memcpy_kind_h_input = cudaMemcpyDeviceToDevice;
   cudaGetLastError();
   if( memcpy_kind_h_input != cudaMemcpyDeviceToDevice ){
-    cudaMemcpy(input,h_input,sizeof(float)*(L*M*N), memcpy_kind_h_input);
+    cudaMemcpy(input,h_input,sizeof(double)*(L*M*N), memcpy_kind_h_input);
   }
-  float * __var_1__;
-  cudaMalloc(&__var_1__,sizeof(float)*(L*M*N));
+  double * __var_1__;
+  cudaMalloc(&__var_1__,sizeof(double)*(L*M*N));
   Check_CUDA_Error("Allocation Error!! : __var_1__\n");
 /*Host Allocation End */
 /* Kernel Launch Begin */
@@ -224,16 +224,23 @@ extern "C" void j3d13pt(float * h_input, int L, int M, int N, float * __var_0__)
   dim3 __gridConfig___kernel___forma_kernel__0__(__grid_0___kernel___forma_kernel__0__,__grid_1___kernel___forma_kernel__0__,__grid_2___kernel___forma_kernel__0__);
   dim3 unrollConfig (__blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z);
 
-  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (input, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, __var_1__);
-  Check_CUDA_Error("Kernel Launch Error!! : __kernel___forma_kernel__0__\n");
+  for (int i = 0; i < 125; i++) {
+    __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (input, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, __var_1__);
+    __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (__var_1__, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, input);
+  }
 
-  cudaPointerAttributes ptrAttrib___var_0__;
-  cudaMemcpyKind memcpy_kind___var_0__ = cudaMemcpyDeviceToHost;
-  if (cudaPointerGetAttributes(&ptrAttrib___var_0__, __var_0__) == cudaSuccess)
-    if (ptrAttrib___var_0__.memoryType == cudaMemoryTypeDevice)
-      memcpy_kind___var_0__ = cudaMemcpyDeviceToDevice;
-  cudaGetLastError();
-  cudaMemcpy(__var_0__,__var_1__, sizeof(float)*(L*M*N), memcpy_kind___var_0__);
+  for (int n = 0; n < 5; n++) {
+#ifdef _TIMER_
+  cudaEvent_t _forma_timer_start_,_forma_timer_stop_;
+  cudaEventCreate(&_forma_timer_start_);
+  cudaEventCreate(&_forma_timer_stop_);
+  cudaEventRecord(_forma_timer_start_,0);
+#endif
+  for (int i = 0; i < 125; i++) {
+    __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (input, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, __var_1__);
+    __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (__var_1__, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, input);
+  }
+
 #ifdef _TIMER_
   cudaEventRecord(_forma_timer_stop_,0);
   cudaEventSynchronize(_forma_timer_stop_);
@@ -243,6 +250,20 @@ extern "C" void j3d13pt(float * h_input, int L, int M, int N, float * __var_0__)
   cudaEventDestroy(_forma_timer_start_);
   cudaEventDestroy(_forma_timer_stop_);
 #endif
+  }
+  
+  Check_CUDA_Error("Kernel Launch Error!! : __kernel___forma_kernel__0__\n");
+
+  
+
+  cudaPointerAttributes ptrAttrib___var_0__;
+  cudaMemcpyKind memcpy_kind___var_0__ = cudaMemcpyDeviceToHost;
+  if (cudaPointerGetAttributes(&ptrAttrib___var_0__, __var_0__) == cudaSuccess)
+    if (ptrAttrib___var_0__.memoryType == cudaMemoryTypeDevice)
+      memcpy_kind___var_0__ = cudaMemcpyDeviceToDevice;
+  cudaGetLastError();
+  cudaMemcpy(__var_0__,__var_1__, sizeof(double)*(L*M*N), memcpy_kind___var_0__);
+
 /*Kernel Launch End */
 /* Host Free Begin */
   cudaFree(input);

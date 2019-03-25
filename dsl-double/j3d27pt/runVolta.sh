@@ -1,8 +1,8 @@
-for regCnt in 32 64; do
-    for f in test-stream-z-overlap-2.cu test-stream-z-overlap-4.cu test-stream-z-overlap-4-opt.cu test-stream-z-overlap-4-opt-32x16.cu test-stream-z-overlap-4-32x16.cu test-stream-z-overlap-2-32x32.cu ; do
+for regCnt in -maxrregcount=32 -maxrregcount=64 ""; do
+    for f in test-stream-z-overlap-4-opt.cu; do
 	echo Running $f for regCnt $regCnt
-	nvcc -O3 -maxrregcount=$regCnt -ccbin=g++ -std=c++11 -Xcompiler "-fPIC -fopenmp -O3 -fno-strict-aliasing" --use_fast_math -Xptxas "-v -dlcm=cg" -gencode arch=compute_60,code=sm_60 ../../cuda_header.cu ../j3d27pt_gold.cpp j3d27pt.driver.cpp $f -o test
-	nvprof --print-gpu-trace ./test 2> forma-ot-results
-	./time.awk
+	nvcc -D _TIMER_ -O3 $regCnt -ccbin=g++ -std=c++11 -Xcompiler -fopenmp --use_fast_math -Xptxas "-v" -gencode arch=compute_70,code=sm_70 -gencode arch=compute_60,code=sm_60 ../common/cuda_header.cu ./*_gold.cpp *.driver.cpp $f -o test 2>&1 | egrep 'reg|sm|spill';
+	./test 514 514 514
     done
 done
+

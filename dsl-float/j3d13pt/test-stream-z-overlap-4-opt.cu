@@ -224,16 +224,23 @@ extern "C" void j3d13pt(float * h_input, int L, int M, int N, float * __var_0__)
   dim3 __gridConfig___kernel___forma_kernel__0__(__grid_0___kernel___forma_kernel__0__,__grid_1___kernel___forma_kernel__0__,__grid_2___kernel___forma_kernel__0__);
   dim3 unrollConfig (__blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z);
 
-  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (input, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, __var_1__);
-  Check_CUDA_Error("Kernel Launch Error!! : __kernel___forma_kernel__0__\n");
+  for (int i = 0; i < 125; i++) {
+    __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (input, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, __var_1__);
+    __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (__var_1__, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, input);
+  }
 
-  cudaPointerAttributes ptrAttrib___var_0__;
-  cudaMemcpyKind memcpy_kind___var_0__ = cudaMemcpyDeviceToHost;
-  if (cudaPointerGetAttributes(&ptrAttrib___var_0__, __var_0__) == cudaSuccess)
-    if (ptrAttrib___var_0__.memoryType == cudaMemoryTypeDevice)
-      memcpy_kind___var_0__ = cudaMemcpyDeviceToDevice;
-  cudaGetLastError();
-  cudaMemcpy(__var_0__,__var_1__, sizeof(float)*(L*M*N), memcpy_kind___var_0__);
+  for (int n = 0; n < 5; n++) {
+#ifdef _TIMER_
+  cudaEvent_t _forma_timer_start_,_forma_timer_stop_;
+  cudaEventCreate(&_forma_timer_start_);
+  cudaEventCreate(&_forma_timer_stop_);
+  cudaEventRecord(_forma_timer_start_,0);
+#endif
+  for (int i = 0; i < 125; i++) {
+    __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (input, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, __var_1__);
+    __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, unrollConfig>>> (__var_1__, L, M, N, __blockConfig___kernel___forma_kernel__0__.x, __blockConfig___kernel___forma_kernel__0__.y, __blockConfig___kernel___forma_kernel__0__.z, input);
+  }
+
 #ifdef _TIMER_
   cudaEventRecord(_forma_timer_stop_,0);
   cudaEventSynchronize(_forma_timer_stop_);
@@ -243,6 +250,20 @@ extern "C" void j3d13pt(float * h_input, int L, int M, int N, float * __var_0__)
   cudaEventDestroy(_forma_timer_start_);
   cudaEventDestroy(_forma_timer_stop_);
 #endif
+  }
+  
+  Check_CUDA_Error("Kernel Launch Error!! : __kernel___forma_kernel__0__\n");
+
+  
+
+  cudaPointerAttributes ptrAttrib___var_0__;
+  cudaMemcpyKind memcpy_kind___var_0__ = cudaMemcpyDeviceToHost;
+  if (cudaPointerGetAttributes(&ptrAttrib___var_0__, __var_0__) == cudaSuccess)
+    if (ptrAttrib___var_0__.memoryType == cudaMemoryTypeDevice)
+      memcpy_kind___var_0__ = cudaMemcpyDeviceToDevice;
+  cudaGetLastError();
+  cudaMemcpy(__var_0__,__var_1__, sizeof(float)*(L*M*N), memcpy_kind___var_0__);
+
 /*Kernel Launch End */
 /* Host Free Begin */
   cudaFree(input);

@@ -19,22 +19,6 @@
 #ifndef FORMA_MAX_BLOCKDIM_2
 #define FORMA_MAX_BLOCKDIM_2 1024
 #endif
-template<typename T>
-__global__ void  __kernel_init__(T* input, T value)
-{
-  int loc = (int)(blockIdx.x)*(int)(blockDim.x)+(int)(threadIdx.x);
-  input[loc] = value;
-}
-
-
-template<typename T>
-void initialize_array(T* d_input, int size, T value)
-{
-  dim3 init_grid(FORMA_CEIL(size,FORMA_MAX_BLOCKDIM_0));
-  dim3 init_block(FORMA_MAX_BLOCKDIM_0);
-  __kernel_init__<<<init_grid,init_block>>>(d_input,value);
-}
-
 
 void Check_CUDA_Error(const char* message);
 /*Texture references */
@@ -44,260 +28,225 @@ extern __shared__ char __FORMA_SHARED_MEM__[];
 
 __global__ void __kernel___forma_kernel__0__(double * __restrict__ input, int N, int M, int FORMA_BLOCKDIM_X, int FORMA_BLOCKDIM_Y, double * __restrict__ __var_1__){
   int __FORMA_SHARED_MEM_OFFSET__ = 0;
-  double * __tilevar_0__ = (double*)(__FORMA_SHARED_MEM__+__FORMA_SHARED_MEM_OFFSET__);
-  __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*FORMA_BLOCKDIM_X;
-  double * __tilevar_1__ = (double*)(__FORMA_SHARED_MEM__+__FORMA_SHARED_MEM_OFFSET__);
-  __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*FORMA_BLOCKDIM_X;
   double * __tilevar_2__ = (double*)(__FORMA_SHARED_MEM__+__FORMA_SHARED_MEM_OFFSET__);
-  __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*FORMA_BLOCKDIM_X;
+  __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*(FORMA_BLOCKDIM_X);
   double * __tilevar_3__ = (double*)(__FORMA_SHARED_MEM__+__FORMA_SHARED_MEM_OFFSET__);
-  __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*FORMA_BLOCKDIM_X;
+  __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*(FORMA_BLOCKDIM_X);
+  double * __tilevar_4__ = (double*)(__FORMA_SHARED_MEM__+__FORMA_SHARED_MEM_OFFSET__);
+  __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*(FORMA_BLOCKDIM_X);
+  double * __tilevar_5__ = (double*)(__FORMA_SHARED_MEM__+__FORMA_SHARED_MEM_OFFSET__);
+  __FORMA_SHARED_MEM_OFFSET__ += sizeof(double)*(FORMA_BLOCKDIM_X);
 
-  double t2=0.0f, t3=0.0f, t4=0.0f, t5=0.0f, out = 0.0f;
-  double b2=0.0f, b3=0.0f, b4=0.0f, b5=0.0f;
-  int __iter_0__ = (int)(blockIdx.x)*((int)FORMA_BLOCKDIM_X-8);
-  int __iter_y__ = (int)(blockIdx.y)*((int)(FORMA_BLOCKDIM_Y));
+  double t2_0=0.0f, t2_1=0.0f, t3_0=0.0f, t3_1=0.0f, t4_0=0.0f, t4_1=0.0f, t5_0=0.0f, t5_1=0.0f;
+  double b2_0=0.0f, b2_1=0.0f, b3_0=0.0f, b3_1=0.0f, b4_0=0.0f, b4_1=0.0f, b5_0=0.0f, b5_1=0.0f;
+  int __iter_0__ = (int)(blockIdx.x)*((int)FORMA_BLOCKDIM_X-16);
+  int __iter_y__ = FORMA_MAX((int)(blockIdx.y)*FORMA_BLOCKDIM_Y-8, 0);
 
-  // Initialize the values
+  //Initialize the values
   int __iter_3__ = FORMA_MAX(__iter_0__,0) + (int)(threadIdx.x) ;
-  if (__iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-1),(M-1))) {
-    __tilevar_1__[__iter_3__-__iter_0__] = 0.0f;
-    __tilevar_2__[__iter_3__-__iter_0__] = 0.0f;
-    __tilevar_3__[__iter_3__-__iter_0__] = 0.0f;
+  if(__iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-1),(M-1))){ 
+    b2_0 = input[__iter_3__+M*__iter_y__];
+    __tilevar_2__[__iter_3__-__iter_0__] = input[__iter_3__+M*(__iter_y__+1)];
+    t2_0 = input[__iter_3__+M*(__iter_y__+2)];
+    t2_1 = input[__iter_3__+M*(__iter_y__+3)];
   }
-  // Initial loop
-  for (int __iter_1__ = FORMA_MAX(0,__iter_y__-4); __iter_1__ <= __iter_y__+3; __iter_1__++) {
+  // Initial computation
+  for (int __iter_1__ = __iter_y__+2; __iter_1__ < FORMA_MIN(N-2,__iter_y__+14); __iter_1__++) {
     if (__iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-1),(M-1))) {
-      __tilevar_0__[__iter_3__-__iter_0__] = input[__iter_3__+M*(__iter_1__)];
+	b2_1 = b2_0;
+      	b2_0 = __tilevar_2__[__iter_3__-__iter_0__]; 
+      	__tilevar_2__[__iter_3__-__iter_0__] = t2_0;
+      	t2_0 = t2_1;
+	t2_1 = input[__iter_3__+M*(__iter_1__+2)];
     }
     __syncthreads ();
-    if(__iter_3__ >= FORMA_MAX((__iter_0__+1),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-2),(M-2))) {
-	// Bottom
-        double __temp_2__ = (__tilevar_0__[__iter_3__-1-__iter_0__]);
-        double __temp_5__ = (__tilevar_0__[__iter_3__-__iter_0__]);
-        double __temp_6__ = (7 * __temp_2__ + 5 * __temp_5__);
-        double __temp_9__ = (__tilevar_0__[__iter_3__+1-__iter_0__]);
-        double __temp_10__ = (__temp_6__ + 9 * __temp_9__) / 118;
-	t2 += __temp_10__;
-	// Mid
-        double __temp_13__ = (__tilevar_0__[__iter_3__-1-__iter_0__]);
-        double __temp_17__ = (__tilevar_0__[__iter_3__-__iter_0__]);
-        double __temp_18__ = (12 * __temp_13__ + 15 * __temp_17__);
-        double __temp_21__ = (__tilevar_0__[__iter_3__+1-__iter_0__]);
-        double __temp_22__ = (__temp_18__ + 12 * __temp_21__) / 118;
-	b2 += __temp_22__;
-	// Top
-        double __temp_25__ = (__tilevar_0__[__iter_3__-1-__iter_0__]);
-        double __temp_29__ = (__tilevar_0__[__iter_3__-__iter_0__]);
-        double __temp_30__ = (9 * __temp_25__ + 5 * __temp_29__);
-        double __temp_33__ = (__tilevar_0__[__iter_3__+1-__iter_0__]);
-        double __temp_34__ = (__temp_30__ + 7 * __temp_33__) / 118;
-        __tilevar_1__[__iter_3__-__iter_0__] += __temp_34__;
+    if (__iter_3__ >= FORMA_MAX((__iter_0__+2),2) &  __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-3),(M-3)) ){
+        double __temp_a__ = b2_1;
+        double __temp_2__ = b2_0;
+        double __temp_b__ = (7 * __temp_a__ + 5 * __temp_2__);
+        double __temp_c__ = (__tilevar_2__[__iter_3__-2-__iter_0__]);
+        double __temp_d__ = (__temp_b__ + 9 * __temp_c__);
+        double __temp_5__ = (__tilevar_2__[__iter_3__-1-__iter_0__]);
+        double __temp_6__ = (__temp_d__ + 12 * __temp_5__);
+        double __temp_9__ = (__tilevar_2__[__iter_3__-__iter_0__]);
+        double __temp_10__ = (__temp_6__ + 15 * __temp_9__);
+        double __temp_13__ = (__tilevar_2__[__iter_3__+1-__iter_0__]);
+        double __temp_14__ = (__temp_10__ + 12 * __temp_13__);
+        double __temp_e__ =  (__tilevar_2__[__iter_3__+2-__iter_0__]);
+        double __temp_f__ = (__temp_14__ + 9 * __temp_e__);
+        double __temp_17__ = t2_0;
+        double __temp_18__ = (__temp_f__ + 5 * __temp_17__);
+        double __temp_g__ = t2_1;
+        double __temp_h__ = (__temp_18__ + 7 * __temp_g__);
+        double __temp_19__ = (__temp_h__ / 118);
+	b3_1 = b3_0;
+	b3_0 = __tilevar_3__[__iter_3__-__iter_0__];   
+        __tilevar_3__[__iter_3__-__iter_0__] = t3_0;
+	t3_0 = t3_1;
+	t3_1 = __temp_19__;
     }
     __syncthreads();
-    if(__iter_3__ >= FORMA_MAX((__iter_0__+2),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-3),(M-2))) {
-	// Bottom
-        double __temp_2__ = (__tilevar_1__[__iter_3__-1-__iter_0__]);
-        double __temp_5__ = (__tilevar_1__[__iter_3__-__iter_0__]);
-        double __temp_6__ = (7 * __temp_2__ + 5 * __temp_5__);
-        double __temp_9__ = (__tilevar_1__[__iter_3__+1-__iter_0__]);
-        double __temp_10__ = (__temp_6__ + 9 * __temp_9__) / 118;
-	t3 += __temp_10__;
-	// Mid
-        double __temp_13__ = (__tilevar_1__[__iter_3__-1-__iter_0__]);
-        double __temp_17__ = (__tilevar_1__[__iter_3__-__iter_0__]);
-        double __temp_18__ = (12 * __temp_13__ + 15 * __temp_17__);
-        double __temp_21__ = (__tilevar_1__[__iter_3__+1-__iter_0__]);
-        double __temp_22__ = (__temp_18__ + 12 * __temp_21__) / 118;
-	b3 += __temp_22__;
-	// Top
-        double __temp_25__ = (__tilevar_1__[__iter_3__-1-__iter_0__]);
-        double __temp_29__ = (__tilevar_1__[__iter_3__-__iter_0__]);
-        double __temp_30__ = (9 * __temp_25__ + 5 * __temp_29__);
-        double __temp_33__ = (__tilevar_1__[__iter_3__+1-__iter_0__]);
-        double __temp_34__ = (__temp_30__ + 7 * __temp_33__) / 118;
-        __tilevar_2__[__iter_3__-__iter_0__] += __temp_34__;
+    if (__iter_3__ >= FORMA_MAX((__iter_0__+4),2) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-5),(M-3))) {
+        double __temp_a__ = b3_1;
+        double __temp_2__ = b3_0;
+        double __temp_b__ = (7 * __temp_a__ + 5 * __temp_2__);
+        double __temp_c__ = (__tilevar_3__[__iter_3__-2-__iter_0__]);
+        double __temp_d__ = (__temp_b__ + 9 * __temp_c__);
+        double __temp_5__ = (__tilevar_3__[__iter_3__-1-__iter_0__]);
+        double __temp_6__ = (__temp_d__ + 12 * __temp_5__);
+        double __temp_9__ = (__tilevar_3__[__iter_3__-__iter_0__]);
+        double __temp_10__ = (__temp_6__ + 15 * __temp_9__);
+        double __temp_13__ = (__tilevar_3__[__iter_3__+1-__iter_0__]);
+        double __temp_14__ = (__temp_10__ + 12 * __temp_13__);
+        double __temp_e__ =  (__tilevar_3__[__iter_3__+2-__iter_0__]);
+        double __temp_f__ = (__temp_14__ + 9 * __temp_e__);
+        double __temp_17__ = t3_0;
+        double __temp_18__ = (__temp_f__ + 5 * __temp_17__);
+        double __temp_g__ = t3_1;
+        double __temp_h__ = (__temp_18__ + 7 * __temp_g__);
+        double __temp_19__ = (__temp_h__ / 118);
+	b4_1 = b4_0;
+	b4_0 = __tilevar_4__[__iter_3__-__iter_0__];   
+        __tilevar_4__[__iter_3__-__iter_0__] = t4_0;
+	t4_0 = t4_1;
+	t4_1 = __temp_19__;
     }
-    __syncthreads ();
-    if(__iter_3__ >= FORMA_MAX((__iter_0__+3),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-4),(M-2))) {
-	// Bottom
-        double __temp_2__ = (__tilevar_2__[__iter_3__-1-__iter_0__]);
-        double __temp_5__ = (__tilevar_2__[__iter_3__-__iter_0__]);
-        double __temp_6__ = (7 * __temp_2__ + 5 * __temp_5__);
-        double __temp_9__ = (__tilevar_2__[__iter_3__+1-__iter_0__]);
-        double __temp_10__ = (__temp_6__ + 9 * __temp_9__) / 118;
-	t4 += __temp_10__;
-	// Mid
-        double __temp_13__ = (__tilevar_2__[__iter_3__-1-__iter_0__]);
-        double __temp_17__ = (__tilevar_2__[__iter_3__-__iter_0__]);
-        double __temp_18__ = (12 * __temp_13__ + 15 * __temp_17__);
-        double __temp_21__ = (__tilevar_2__[__iter_3__+1-__iter_0__]);
-        double __temp_22__ = (__temp_18__ + 12 * __temp_21__) / 118;
-	b4 += __temp_22__;
-	// Top
-        double __temp_25__ = (__tilevar_2__[__iter_3__-1-__iter_0__]);
-        double __temp_29__ = (__tilevar_2__[__iter_3__-__iter_0__]);
-        double __temp_30__ = (9 * __temp_25__ + 5 * __temp_29__);
-        double __temp_33__ = (__tilevar_2__[__iter_3__+1-__iter_0__]);
-        double __temp_34__ = (__temp_30__ + 7 * __temp_33__) / 118;
-        __tilevar_3__[__iter_3__-__iter_0__] += __temp_34__;
+    __syncthreads();
+    if(__iter_3__ >= FORMA_MAX((__iter_0__+6),2) &  __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-7),(M-3))) {
+        double __temp_a__ = b4_1;
+        double __temp_2__ = b4_0;
+        double __temp_b__ = (7 * __temp_a__ + 5 * __temp_2__);
+        double __temp_c__ = (__tilevar_4__[__iter_3__-2-__iter_0__]);
+        double __temp_d__ = (__temp_b__ + 9 * __temp_c__);
+        double __temp_5__ = (__tilevar_4__[__iter_3__-1-__iter_0__]);
+        double __temp_6__ = (__temp_d__ + 12 * __temp_5__);
+        double __temp_9__ = (__tilevar_4__[__iter_3__-__iter_0__]);
+        double __temp_10__ = (__temp_6__ + 15 * __temp_9__);
+        double __temp_13__ = (__tilevar_4__[__iter_3__+1-__iter_0__]);
+        double __temp_14__ = (__temp_10__ + 12 * __temp_13__);
+        double __temp_e__ =  (__tilevar_4__[__iter_3__+2-__iter_0__]);
+        double __temp_f__ = (__temp_14__ + 9 * __temp_e__);
+        double __temp_17__ = t4_0;
+        double __temp_18__ = (__temp_f__ + 5 * __temp_17__);
+        double __temp_g__ = t4_1;
+        double __temp_h__ = (__temp_18__ + 7 * __temp_g__);
+        double __temp_19__ = (__temp_h__ / 118);
+	b5_1 = b5_0;
+	b5_0 = __tilevar_5__[__iter_3__-__iter_0__];   
+        __tilevar_5__[__iter_3__-__iter_0__] = t5_0;
+	t5_0 = t5_1;
+	t5_1 = __temp_19__;
     }
-    __syncthreads ();
-    if(__iter_3__ >= FORMA_MAX((__iter_0__+4),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-5),(M-2))) {
-	// Bottom
-        double __temp_2__ = (__tilevar_3__[__iter_3__-1-__iter_0__]);
-        double __temp_5__ = (__tilevar_3__[__iter_3__-__iter_0__]);
-        double __temp_6__ = (7 * __temp_2__ + 5 * __temp_5__);
-        double __temp_9__ = (__tilevar_3__[__iter_3__+1-__iter_0__]);
-        double __temp_10__ = (__temp_6__ + 9 * __temp_9__) / 118;
-	t5 += __temp_10__;
-	// Mid
-        double __temp_13__ = (__tilevar_3__[__iter_3__-1-__iter_0__]);
-        double __temp_17__ = (__tilevar_3__[__iter_3__-__iter_0__]);
-        double __temp_18__ = (12 * __temp_13__ + 15 * __temp_17__);
-        double __temp_21__ = (__tilevar_3__[__iter_3__+1-__iter_0__]);
-        double __temp_22__ = (__temp_18__ + 12 * __temp_21__) / 118;
-	b5 += __temp_22__;
-	// Top
-        double __temp_25__ = (__tilevar_3__[__iter_3__-1-__iter_0__]);
-        double __temp_29__ = (__tilevar_3__[__iter_3__-__iter_0__]);
-        double __temp_30__ = (9 * __temp_25__ + 5 * __temp_29__);
-        double __temp_33__ = (__tilevar_3__[__iter_3__+1-__iter_0__]);
-        double __temp_34__ = (__temp_30__ + 7 * __temp_33__) / 118;
-	out += __temp_34__;
-    }
-    __syncthreads ();
-    // Now rotate
-    __tilevar_1__[__iter_3__-__iter_0__] = b2;
-    b2 = t2;
-    t2 = 0.0f;
-    __tilevar_2__[__iter_3__-__iter_0__] = b3;
-    b3 = t3;
-    t3 = 0.0f;
-    __tilevar_3__[__iter_3__-__iter_0__] = b4;
-    b4 = t4;
-    t4 = 0.0f;
-    out= b5;
-    b5 = t5;
-    t5 = 0.0f;
   }
   // Rest of the computation
-  __syncthreads ();
-  for (int __iter_1__ = __iter_y__+4; __iter_1__ <= FORMA_MIN(N-1,__iter_y__+FORMA_BLOCKDIM_Y+3); __iter_1__++) {
+  for (int __iter_1__ = FORMA_MAX(2,__iter_y__+14); __iter_1__ < FORMA_MIN(N-2,__iter_y__+FORMA_BLOCKDIM_Y+14); __iter_1__++) {
     if (__iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-1),(M-1))) {
-      __tilevar_0__[__iter_3__-__iter_0__] = input[__iter_3__+M*(__iter_1__)];
+	b2_1 = b2_0;
+      	b2_0 = __tilevar_2__[__iter_3__-__iter_0__]; 
+      	__tilevar_2__[__iter_3__-__iter_0__] = t2_0;
+      	t2_0 = t2_1;
+	t2_1 = input[__iter_3__+M*(__iter_1__+2)];
     }
     __syncthreads ();
-    if(__iter_3__ >= FORMA_MAX((__iter_0__+1),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-2),(M-2))) {
-	// Bottom
-        double __temp_2__ = (__tilevar_0__[__iter_3__-1-__iter_0__]);
-        double __temp_5__ = (__tilevar_0__[__iter_3__-__iter_0__]);
-        double __temp_6__ = (7 * __temp_2__ + 5 * __temp_5__);
-        double __temp_9__ = (__tilevar_0__[__iter_3__+1-__iter_0__]);
-        double __temp_10__ = (__temp_6__ + 9 * __temp_9__) / 118;
-	t2 += __temp_10__;
-	// Mid
-        double __temp_13__ = (__tilevar_0__[__iter_3__-1-__iter_0__]);
-        double __temp_17__ = (__tilevar_0__[__iter_3__-__iter_0__]);
-        double __temp_18__ = (12 * __temp_13__ + 15 * __temp_17__);
-        double __temp_21__ = (__tilevar_0__[__iter_3__+1-__iter_0__]);
-        double __temp_22__ = (__temp_18__ + 12 * __temp_21__) / 118;
-	b2 += __temp_22__;
-	// Top
-        double __temp_25__ = (__tilevar_0__[__iter_3__-1-__iter_0__]);
-        double __temp_29__ = (__tilevar_0__[__iter_3__-__iter_0__]);
-        double __temp_30__ = (9 * __temp_25__ + 5 * __temp_29__);
-        double __temp_33__ = (__tilevar_0__[__iter_3__+1-__iter_0__]);
-        double __temp_34__ = (__temp_30__ + 7 * __temp_33__) / 118;
-        __tilevar_1__[__iter_3__-__iter_0__] += __temp_34__;
+    if (__iter_3__ >= FORMA_MAX((__iter_0__+2),2) &  __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-3),(M-3)) ){
+        double __temp_a__ = b2_1;
+        double __temp_2__ = b2_0;
+        double __temp_b__ = (7 * __temp_a__ + 5 * __temp_2__);
+        double __temp_c__ = (__tilevar_2__[__iter_3__-2-__iter_0__]);
+        double __temp_d__ = (__temp_b__ + 9 * __temp_c__);
+        double __temp_5__ = (__tilevar_2__[__iter_3__-1-__iter_0__]);
+        double __temp_6__ = (__temp_d__ + 12 * __temp_5__);
+        double __temp_9__ = (__tilevar_2__[__iter_3__-__iter_0__]);
+        double __temp_10__ = (__temp_6__ + 15 * __temp_9__);
+        double __temp_13__ = (__tilevar_2__[__iter_3__+1-__iter_0__]);
+        double __temp_14__ = (__temp_10__ + 12 * __temp_13__);
+        double __temp_e__ =  (__tilevar_2__[__iter_3__+2-__iter_0__]);
+        double __temp_f__ = (__temp_14__ + 9 * __temp_e__);
+        double __temp_17__ = t2_0;
+        double __temp_18__ = (__temp_f__ + 5 * __temp_17__);
+        double __temp_g__ = t2_1;
+        double __temp_h__ = (__temp_18__ + 7 * __temp_g__);
+        double __temp_19__ = (__temp_h__ / 118);
+	b3_1 = b3_0;
+	b3_0 = __tilevar_3__[__iter_3__-__iter_0__];   
+        __tilevar_3__[__iter_3__-__iter_0__] = t3_0;
+	t3_0 = t3_1;
+	t3_1 = __temp_19__;
     }
     __syncthreads();
-    if(__iter_3__ >= FORMA_MAX((__iter_0__+2),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-3),(M-2))) {
-	// Bottom
-        double __temp_2__ = (__tilevar_1__[__iter_3__-1-__iter_0__]);
-        double __temp_5__ = (__tilevar_1__[__iter_3__-__iter_0__]);
-        double __temp_6__ = (7 * __temp_2__ + 5 * __temp_5__);
-        double __temp_9__ = (__tilevar_1__[__iter_3__+1-__iter_0__]);
-        double __temp_10__ = (__temp_6__ + 9 * __temp_9__) / 118;
-	t3 += __temp_10__;
-	// Mid
-        double __temp_13__ = (__tilevar_1__[__iter_3__-1-__iter_0__]);
-        double __temp_17__ = (__tilevar_1__[__iter_3__-__iter_0__]);
-        double __temp_18__ = (12 * __temp_13__ + 15 * __temp_17__);
-        double __temp_21__ = (__tilevar_1__[__iter_3__+1-__iter_0__]);
-        double __temp_22__ = (__temp_18__ + 12 * __temp_21__) / 118;
-	b3 += __temp_22__;
-	// Top
-        double __temp_25__ = (__tilevar_1__[__iter_3__-1-__iter_0__]);
-        double __temp_29__ = (__tilevar_1__[__iter_3__-__iter_0__]);
-        double __temp_30__ = (9 * __temp_25__ + 5 * __temp_29__);
-        double __temp_33__ = (__tilevar_1__[__iter_3__+1-__iter_0__]);
-        double __temp_34__ = (__temp_30__ + 7 * __temp_33__) / 118;
-        __tilevar_2__[__iter_3__-__iter_0__] += __temp_34__;
+    if (__iter_3__ >= FORMA_MAX((__iter_0__+4),2) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-5),(M-3))) {
+        double __temp_a__ = b3_1;
+        double __temp_2__ = b3_0;
+        double __temp_b__ = (7 * __temp_a__ + 5 * __temp_2__);
+        double __temp_c__ = (__tilevar_3__[__iter_3__-2-__iter_0__]);
+        double __temp_d__ = (__temp_b__ + 9 * __temp_c__);
+        double __temp_5__ = (__tilevar_3__[__iter_3__-1-__iter_0__]);
+        double __temp_6__ = (__temp_d__ + 12 * __temp_5__);
+        double __temp_9__ = (__tilevar_3__[__iter_3__-__iter_0__]);
+        double __temp_10__ = (__temp_6__ + 15 * __temp_9__);
+        double __temp_13__ = (__tilevar_3__[__iter_3__+1-__iter_0__]);
+        double __temp_14__ = (__temp_10__ + 12 * __temp_13__);
+        double __temp_e__ =  (__tilevar_3__[__iter_3__+2-__iter_0__]);
+        double __temp_f__ = (__temp_14__ + 9 * __temp_e__);
+        double __temp_17__ = t3_0;
+        double __temp_18__ = (__temp_f__ + 5 * __temp_17__);
+        double __temp_g__ = t3_1;
+        double __temp_h__ = (__temp_18__ + 7 * __temp_g__);
+        double __temp_19__ = (__temp_h__ / 118);
+	b4_1 = b4_0;
+	b4_0 = __tilevar_4__[__iter_3__-__iter_0__];   
+        __tilevar_4__[__iter_3__-__iter_0__] = t4_0;
+	t4_0 = t4_1;
+	t4_1 = __temp_19__;
     }
-    __syncthreads ();
-    if(__iter_3__ >= FORMA_MAX((__iter_0__+3),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-4),(M-2))) {
-	// Bottom
-        double __temp_2__ = (__tilevar_2__[__iter_3__-1-__iter_0__]);
-        double __temp_5__ = (__tilevar_2__[__iter_3__-__iter_0__]);
-        double __temp_6__ = (7 * __temp_2__ + 5 * __temp_5__);
-        double __temp_9__ = (__tilevar_2__[__iter_3__+1-__iter_0__]);
-        double __temp_10__ = (__temp_6__ + 9 * __temp_9__) / 118;
-	t4 += __temp_10__;
-	// Mid
-        double __temp_13__ = (__tilevar_2__[__iter_3__-1-__iter_0__]);
-        double __temp_17__ = (__tilevar_2__[__iter_3__-__iter_0__]);
-        double __temp_18__ = (12 * __temp_13__ + 15 * __temp_17__);
-        double __temp_21__ = (__tilevar_2__[__iter_3__+1-__iter_0__]);
-        double __temp_22__ = (__temp_18__ + 12 * __temp_21__) / 118;
-	b4 += __temp_22__;
-	// Top
-        double __temp_25__ = (__tilevar_2__[__iter_3__-1-__iter_0__]);
-        double __temp_29__ = (__tilevar_2__[__iter_3__-__iter_0__]);
-        double __temp_30__ = (9 * __temp_25__ + 5 * __temp_29__);
-        double __temp_33__ = (__tilevar_2__[__iter_3__+1-__iter_0__]);
-        double __temp_34__ = (__temp_30__ + 7 * __temp_33__) / 118;
-        __tilevar_3__[__iter_3__-__iter_0__] += __temp_34__;
+    __syncthreads();
+    if(__iter_3__ >= FORMA_MAX((__iter_0__+6),2) &  __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-7),(M-3))) {
+        double __temp_a__ = b4_1;
+        double __temp_2__ = b4_0;
+        double __temp_b__ = (7 * __temp_a__ + 5 * __temp_2__);
+        double __temp_c__ = (__tilevar_4__[__iter_3__-2-__iter_0__]);
+        double __temp_d__ = (__temp_b__ + 9 * __temp_c__);
+        double __temp_5__ = (__tilevar_4__[__iter_3__-1-__iter_0__]);
+        double __temp_6__ = (__temp_d__ + 12 * __temp_5__);
+        double __temp_9__ = (__tilevar_4__[__iter_3__-__iter_0__]);
+        double __temp_10__ = (__temp_6__ + 15 * __temp_9__);
+        double __temp_13__ = (__tilevar_4__[__iter_3__+1-__iter_0__]);
+        double __temp_14__ = (__temp_10__ + 12 * __temp_13__);
+        double __temp_e__ =  (__tilevar_4__[__iter_3__+2-__iter_0__]);
+        double __temp_f__ = (__temp_14__ + 9 * __temp_e__);
+        double __temp_17__ = t4_0;
+        double __temp_18__ = (__temp_f__ + 5 * __temp_17__);
+        double __temp_g__ = t4_1;
+        double __temp_h__ = (__temp_18__ + 7 * __temp_g__);
+        double __temp_19__ = (__temp_h__ / 118);
+	b5_1 = b5_0;
+	b5_0 = __tilevar_5__[__iter_3__-__iter_0__];   
+        __tilevar_5__[__iter_3__-__iter_0__] = t5_0;
+	t5_0 = t5_1;
+	t5_1 = __temp_19__;
     }
-    __syncthreads ();
-    if(__iter_3__ >= FORMA_MAX((__iter_0__+4),1) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-5),(M-2))) {
-	// Bottom
-        double __temp_2__ = (__tilevar_3__[__iter_3__-1-__iter_0__]);
-        double __temp_5__ = (__tilevar_3__[__iter_3__-__iter_0__]);
-        double __temp_6__ = (7 * __temp_2__ + 5 * __temp_5__);
-        double __temp_9__ = (__tilevar_3__[__iter_3__+1-__iter_0__]);
-        double __temp_10__ = (__temp_6__ + 9 * __temp_9__) / 118;
-	t5 += __temp_10__;
-	// Mid
-        double __temp_13__ = (__tilevar_3__[__iter_3__-1-__iter_0__]);
-        double __temp_17__ = (__tilevar_3__[__iter_3__-__iter_0__]);
-        double __temp_18__ = (12 * __temp_13__ + 15 * __temp_17__);
-        double __temp_21__ = (__tilevar_3__[__iter_3__+1-__iter_0__]);
-        double __temp_22__ = (__temp_18__ + 12 * __temp_21__) / 118;
-	b5 += __temp_22__;
-	// Top
-        double __temp_25__ = (__tilevar_3__[__iter_3__-1-__iter_0__]);
-        double __temp_29__ = (__tilevar_3__[__iter_3__-__iter_0__]);
-        double __temp_30__ = (9 * __temp_25__ + 5 * __temp_29__);
-        double __temp_33__ = (__tilevar_3__[__iter_3__+1-__iter_0__]);
-        double __temp_34__ = (__temp_30__ + 7 * __temp_33__) / 118;
-	out += __temp_34__;
-        __var_1__[__iter_3__+M*FORMA_MAX(__iter_1__-4,0)] = out;
+    __syncthreads();
+    if (__iter_3__ >= FORMA_MAX((__iter_0__+8),2) & __iter_3__ <= FORMA_MIN(((__iter_0__+FORMA_BLOCKDIM_X)-9),(M-3))){
+	double __temp_a__ = b5_1;
+        double __temp_2__ = b5_0;
+        double __temp_b__ = (7 * __temp_a__ + 5 * __temp_2__);
+        double __temp_c__ = (__tilevar_5__[__iter_3__-2-__iter_0__]);
+        double __temp_d__ = (__temp_b__ + 9 * __temp_c__);
+        double __temp_5__ = (__tilevar_5__[__iter_3__-1-__iter_0__]);
+        double __temp_6__ = (__temp_d__ + 12 * __temp_5__);
+        double __temp_9__ = (__tilevar_5__[__iter_3__-__iter_0__]);
+        double __temp_10__ = (__temp_6__ + 15 * __temp_9__);
+        double __temp_13__ = (__tilevar_5__[__iter_3__+1-__iter_0__]);
+        double __temp_14__ = (__temp_10__ + 12 * __temp_13__);
+        double __temp_e__ =  (__tilevar_5__[__iter_3__+2-__iter_0__]);
+        double __temp_f__ = (__temp_14__ + 9 * __temp_e__);
+        double __temp_17__ = t5_0;
+        double __temp_18__ = (__temp_f__ + 5 * __temp_17__);
+        double __temp_g__ = t5_1;
+        double __temp_h__ = (__temp_18__ + 7 * __temp_g__);
+        double __temp_19__ = (__temp_h__ / 118);
+        __var_1__[__iter_3__+M*FORMA_MAX(__iter_1__-6,0)] = __temp_19__;
     }
-    __syncthreads ();
-    // Now rotate
-    __tilevar_1__[__iter_3__-__iter_0__] = b2;
-    b2 = t2;
-    t2 = 0.0f;
-    __tilevar_2__[__iter_3__-__iter_0__] = b3;
-    b3 = t3;
-    t3 = 0.0f;
-    __tilevar_3__[__iter_3__-__iter_0__] = b4;
-    b4 = t4;
-    t4 = 0.0f;
-    out= b5;
-    b5 = t5;
-    t5 = 0.0f;
   }
 }
 
@@ -314,7 +263,7 @@ extern "C" void jacobi(double * h_input, int N, int M, double * __var_0__){
 
 /* Host allocation Begin */
   double * input;
-  cudaMalloc(&input,sizeof(double)*((N)*(M)));
+  cudaMalloc(&input,sizeof(double)*(N*M));
   Check_CUDA_Error("Allocation Error!! : input\n");
   cudaPointerAttributes ptrAttrib_h_input;
   cudaMemcpyKind memcpy_kind_h_input = cudaMemcpyHostToDevice;
@@ -323,42 +272,45 @@ extern "C" void jacobi(double * h_input, int N, int M, double * __var_0__){
       memcpy_kind_h_input = cudaMemcpyDeviceToDevice;
   cudaGetLastError();
   if( memcpy_kind_h_input != cudaMemcpyDeviceToDevice ){
-    cudaMemcpy(input,h_input,sizeof(double)*((N)*(M)), memcpy_kind_h_input);
+    cudaMemcpy(input,h_input,sizeof(double)*(N*M), memcpy_kind_h_input);
   }
   double * __var_1__;
-  cudaMalloc(&__var_1__,sizeof(double)*((N)*(M)));
+  cudaMalloc(&__var_1__,sizeof(double)*(N*M));
   Check_CUDA_Error("Allocation Error!! : __var_1__\n");
 /*Host Allocation End */
 /* Kernel Launch Begin */
   int __FORMA_MAX_SHARED_MEM__;
   cudaDeviceGetAttribute(&__FORMA_MAX_SHARED_MEM__,cudaDevAttrMaxSharedMemoryPerBlock,0);
+  int __size_0___kernel___forma_kernel__0__ = M;
+  int __size_1___kernel___forma_kernel__0__ = N;
+  int __block_0___kernel___forma_kernel__0__ = 128;
+  int __block_1___kernel___forma_kernel__0__ = 1;
+  dim3 __blockConfig___kernel___forma_kernel__0__(__block_0___kernel___forma_kernel__0__,__block_1___kernel___forma_kernel__0__);
+  int __SMemSize___kernel___forma_kernel__0__ = 0;
+  __SMemSize___kernel___forma_kernel__0__ = __blockSizeToSMemSize___kernel___forma_kernel__0__(__blockConfig___kernel___forma_kernel__0__);
+  int __grid_0___kernel___forma_kernel__0__ = FORMA_CEIL(__size_0___kernel___forma_kernel__0__,__blockConfig___kernel___forma_kernel__0__.x-16);
+  int __grid_1___kernel___forma_kernel__0__ = FORMA_CEIL(__size_1___kernel___forma_kernel__0__, 128);
+  dim3 __gridConfig___kernel___forma_kernel__0__(__grid_0___kernel___forma_kernel__0__,__grid_1___kernel___forma_kernel__0__);
+
+  for (int i = 0; i < 125; i++) {
+  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (input, N, M, __blockConfig___kernel___forma_kernel__0__.x, 128, __var_1__);
+  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (__var_1__, N, M, __blockConfig___kernel___forma_kernel__0__.x, 128, input);
+  }
+  Check_CUDA_Error("Kernel Launch Error!! : __kernel___forma_kernel__0__\n");
+
+  for (int n = 0; n < 5; n++) {
 #ifdef _TIMER_
   cudaEvent_t _forma_timer_start_,_forma_timer_stop_;
   cudaEventCreate(&_forma_timer_start_);
   cudaEventCreate(&_forma_timer_stop_);
   cudaEventRecord(_forma_timer_start_,0);
 #endif
-  int __size_0___kernel___forma_kernel__0__ = M;
-  int __size_1___kernel___forma_kernel__0__ = N;
 
-  int __block_0___kernel___forma_kernel__0__ = 128;
-  int __block_1___kernel___forma_kernel__0__ = 1;
-  dim3 __blockConfig___kernel___forma_kernel__0__(__block_0___kernel___forma_kernel__0__,__block_1___kernel___forma_kernel__0__);
-  int __SMemSize___kernel___forma_kernel__0__ = 0;
-  __SMemSize___kernel___forma_kernel__0__ = __blockSizeToSMemSize___kernel___forma_kernel__0__(__blockConfig___kernel___forma_kernel__0__);
-  int __grid_0___kernel___forma_kernel__0__ = FORMA_CEIL(__size_0___kernel___forma_kernel__0__,__blockConfig___kernel___forma_kernel__0__.x-8);
-  int __grid_1___kernel___forma_kernel__0__ = FORMA_CEIL(__size_1___kernel___forma_kernel__0__,__size_0___kernel___forma_kernel__0__/32);
-  dim3 __gridConfig___kernel___forma_kernel__0__(__grid_0___kernel___forma_kernel__0__,__grid_1___kernel___forma_kernel__0__);
-  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (input, N, M, __blockConfig___kernel___forma_kernel__0__.x, __size_0___kernel___forma_kernel__0__/32, __var_1__);
-  Check_CUDA_Error("Kernel Launch Error!! : __kernel___forma_kernel__0__\n");
+  for (int i = 0; i < 125; i++) {
+  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (input, N, M, __blockConfig___kernel___forma_kernel__0__.x, 128, __var_1__);
+  __kernel___forma_kernel__0__<<<__gridConfig___kernel___forma_kernel__0__, __blockConfig___kernel___forma_kernel__0__, __SMemSize___kernel___forma_kernel__0__>>> (__var_1__, N, M, __blockConfig___kernel___forma_kernel__0__.x, 128, input);
+  }
 
-  cudaPointerAttributes ptrAttrib___var_0__;
-  cudaMemcpyKind memcpy_kind___var_0__ = cudaMemcpyDeviceToHost;
-  if (cudaPointerGetAttributes(&ptrAttrib___var_0__, __var_0__) == cudaSuccess)
-    if (ptrAttrib___var_0__.memoryType == cudaMemoryTypeDevice)
-      memcpy_kind___var_0__ = cudaMemcpyDeviceToDevice;
-  cudaGetLastError();
-  cudaMemcpy(__var_0__,__var_1__, sizeof(double)*((N)*(M)), memcpy_kind___var_0__);
 #ifdef _TIMER_
   cudaEventRecord(_forma_timer_stop_,0);
   cudaEventSynchronize(_forma_timer_stop_);
@@ -368,6 +320,16 @@ extern "C" void jacobi(double * h_input, int N, int M, double * __var_0__){
   cudaEventDestroy(_forma_timer_start_);
   cudaEventDestroy(_forma_timer_stop_);
 #endif
+  }
+
+  cudaPointerAttributes ptrAttrib___var_0__;
+  cudaMemcpyKind memcpy_kind___var_0__ = cudaMemcpyDeviceToHost;
+  if (cudaPointerGetAttributes(&ptrAttrib___var_0__, __var_0__) == cudaSuccess)
+    if (ptrAttrib___var_0__.memoryType == cudaMemoryTypeDevice)
+      memcpy_kind___var_0__ = cudaMemcpyDeviceToDevice;
+  cudaGetLastError();
+  cudaMemcpy(__var_0__,__var_1__, sizeof(double)*(N*M), memcpy_kind___var_0__);
+
 /*Kernel Launch End */
 /* Host Free Begin */
   cudaFree(input);
